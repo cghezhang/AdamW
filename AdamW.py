@@ -198,8 +198,7 @@ class AdamOptimizer(optimizer.Optimizer):
       v_t = scatter_add(v, indices, v_scaled_g_values)
     v_sqrt = math_ops.sqrt(v_t)
     
-    #var_wdc = var * (1-wdc_t)
-    
+    #var_wdc = var - var * wdc_t
     var_wdc  = state_ops.assign_sub(var,
                                       var * wdc_t,
                                       use_locking=self._use_locking)

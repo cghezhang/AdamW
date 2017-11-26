@@ -8,7 +8,7 @@ import os.path
 
 
 tf.set_random_seed(23456)  
-'''
+
 #load data
 data = np.float32(np.loadtxt('Data.txt'))
 
@@ -91,7 +91,6 @@ output_size = input_y.shape[1]
 
 
 print("Data is processed")
-'''
 
 
 
@@ -190,9 +189,9 @@ for epoch in range(training_epochs):
     clr, wdc = ap.getParameter(epoch)
     optimizer._lr    = clr
     optimizer._lr_t  = clr 
-    #optimizer._wdc_t  = wdc 
+    optimizer._wdc   = wdc
+    optimizer._wdc_t = wdc
     
-
     for i in range(total_batch):
         index_train = I[i*batch_size:(i+1)*batch_size]
         batch_xs = input_x[index_train]

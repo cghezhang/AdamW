@@ -45,7 +45,7 @@ class AdamWParameter:
         wdc  = yita * wt
         self.t +=1 
         return (
-                tf.convert_to_tensor(clr,   dtype=tf.float32), 
+                tf.convert_to_tensor(clr,  dtype=tf.float32), 
                 tf.convert_to_tensor(wdc,  dtype=tf.float32)
                 )
                
