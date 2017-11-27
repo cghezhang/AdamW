@@ -62,7 +62,7 @@ class PFNNParameter:
         pindex_1 = tf.cast(pscale, 'int32') % nslices
         
         bamount = tf.expand_dims(pamount, 1)
-        wamount = tf.expand_dims(bamount, 1) # expand 2 dimension [n*1*1]
+        wamount = tf.expand_dims(bamount, 1)          # expand 2 dimension [n*1*1]
         return  pindex_1, bamount, wamount
     
 

@@ -41,8 +41,8 @@ class AdamWParameter:
         wt   = self.weightDecayNormalized()
         lr   = yita * self.LR
         lrd  = self.weightDecay
-        clr =  lr/(1+self.t*lrd)
-        wdc  = yita * wt
+        clr =  lr/(1+self.t*lrd)                        #currentLearningRate
+        wdc  = yita * wt                                #weightDecayCurrent
         self.t +=1 
         return (
                 tf.convert_to_tensor(clr,  dtype=tf.float32), 
