@@ -216,8 +216,6 @@ for epoch in range(training_epochs):
         avg_cost_train += l / num_trainBatch
         if i % 1000 == 0:
             print(i, "trainingloss:", l)
-            print(i, "clr:", sess.run(optimizer._lr), sess.run(optimizer._lr_t))
-            print(i, "wdc:", sess.run(optimizer._wdc),sess.run(optimizer._wdc_t))
             
     for i in range(num_testBatch):
         if i==0:
@@ -235,6 +233,8 @@ for epoch in range(training_epochs):
     #print and save training test error 
     print('Epoch:', '%04d' % (epoch + 1), 'trainingloss =', '{:.9f}'.format(avg_cost_train))
     print('Epoch:', '%04d' % (epoch + 1), 'testloss =', '{:.9f}'.format(avg_cost_test))
+    print('Epoch:', '%04d' % (epoch + 1), 'clr:', sess.run(optimizer._lr), sess.run(optimizer._lr_t))
+    print('Epoch:', '%04d' % (epoch + 1), 'wdc:', sess.run(optimizer._wdc),sess.run(optimizer._wdc_t))
     error_train[epoch] = avg_cost_train
     error_test[epoch]  = avg_cost_test
     error_train.tofile("./dog/model/error_train.bin")
