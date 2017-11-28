@@ -131,12 +131,14 @@ H3 = tf.squeeze(H3, -1)
 
 loss = tf.reduce_mean(tf.square(Y_nn - H3))
 
-'''
+
 learning_rate      = 0.0001
 learning_rateDecay = 0.0025
+
 '''
 learning_rate      = 0.001
 learning_rateDecay = 0.025
+'''
 batch_size         = 32
 training_epochs    = 200
 Te                 = 20
@@ -215,7 +217,7 @@ for epoch in range(training_epochs):
         if i % 1000 == 0:
             print(i, "trainingloss:", l)
             print(i, "clr:", sess.run(optimizer._lr), sess.run(optimizer._lr_t))
-            print(i, "wdc:", sess.run(optimizer._wdc),sess.run(optimizer._wdc_))
+            print(i, "wdc:", sess.run(optimizer._wdc),sess.run(optimizer._wdc_t))
             
     for i in range(num_testBatch):
         if i==0:
