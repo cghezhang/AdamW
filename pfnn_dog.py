@@ -199,13 +199,15 @@ print('Learning start..')
 for epoch in range(training_epochs):
     avg_cost_train = 0
     avg_cost_test  = 0
-    
+
+    '''  
     #modify parameters in adamw
     clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
     optimizer._lr    = clr
     optimizer._lr_t  = clr 
     optimizer._wdc   = wdc
     optimizer._wdc_t = wdc
+    '''
     
     for i in range(num_trainBatch):
         index_train = I[i*batch_size:(i+1)*batch_size]
@@ -214,6 +216,13 @@ for epoch in range(training_epochs):
         feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, keep_prob: 0.7}
         l, _, = sess.run([loss, optimizer], feed_dict=feed_dict)
         avg_cost_train += l / num_trainBatch
+        
+        #modify parameters in adamw
+        clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
+        optimizer._lr    = clr
+        optimizer._lr_t  = clr 
+        optimizer._wdc   = wdc
+        optimizer._wdc_t = wdc
         if i % 1000 == 0:
             print(i, "trainingloss:", l)
             
