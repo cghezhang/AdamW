@@ -131,11 +131,11 @@ H3 = tf.squeeze(H3, -1)
 
 loss = tf.reduce_mean(tf.square(Y_nn - H3))
 
-'''
+"""
 learning_rate      = 0.0001
 learning_rateDecay = 0.0025
+"""
 
-'''
 learning_rate      = 0.001
 learning_rateDecay = 0.025
 
@@ -154,9 +154,9 @@ ap = AdamWParameter(nEpochs      = training_epochs,
                     nBatches     = total_batch
                     )
 
-clr = tf.placeholder(tf.float32)
-wdc = tf.placeholder(tf.float32)
-optimizer = AdamOptimizer(learning_rate=clr, wdc =wdc ).minimize(loss)
+lr_c = tf.placeholder(tf.float32)
+wd_c = tf.placeholder(tf.float32)
+optimizer = AdamOptimizer(learning_rate=lr_c, wdc =wd_c).minimize(loss)
 
 
 #session
@@ -216,7 +216,7 @@ for epoch in range(training_epochs):
         batch_xs = input_x[index_train]
         batch_ys = input_y[index_train]
         clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
-        feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, keep_prob: 0.7, clr : clr, wdc : wdc}
+        feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, keep_prob: 0.7, lr_c: clr, wd_c: wdc}
         l, _, = sess.run([loss, optimizer], feed_dict=feed_dict)
         avg_cost_train += l / num_trainBatch
         
