@@ -15,6 +15,7 @@ class AdamWParameter:
         self.EpochNext   = self.Te + 1            #next restart epoch
         self.T_cur       = 0   
         self.t           = 0 
+        self.wd          = self.weightDecayNormalized()
     
     
     #yita
@@ -38,15 +39,14 @@ class AdamWParameter:
     def getParameter(self, epoch):
         
         yita = self.learningRateCosineSGDR(epoch)
-        wt   = self.weightDecayNormalized()
         lr   = yita * self.LR
         lrd  = self.weightDecay
-        clr =  lr/(1+self.t*lrd)                        #currentLearningRate
-        wdc  = yita * wt                                #weightDecayCurrent
+        clr  = lr/(1+self.t*lrd)                             #currentLearningRate
+        wdc  = yita * self.wd                                #weightDecayCurrent
         self.t +=1 
         return (
-                tf.convert_to_tensor(clr,  dtype=tf.float32), 
-                tf.convert_to_tensor(wdc,  dtype=tf.float32)
+                np.float32(clr),
+                np.float32(wdc)
                 )
                
                

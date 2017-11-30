@@ -131,14 +131,14 @@ H3 = tf.squeeze(H3, -1)
 
 loss = tf.reduce_mean(tf.square(Y_nn - H3))
 
-
+'''
 learning_rate      = 0.0001
 learning_rateDecay = 0.0025
 
 '''
 learning_rate      = 0.001
 learning_rateDecay = 0.025
-'''
+
 batch_size         = 32
 training_epochs    = 200
 Te                 = 20
@@ -153,7 +153,9 @@ ap = AdamWParameter(nEpochs      = training_epochs,
                     batchSize    = batch_size,
                     nBatches     = total_batch
                     )
-clr, wdc = ap.getParameter(0)
+
+clr = tf.placeholder(tf.float32)
+wdc = tf.placeholder(tf.float32)
 optimizer = AdamOptimizer(learning_rate=clr, wdc =wdc ).minimize(loss)
 
 
@@ -213,16 +215,11 @@ for epoch in range(training_epochs):
         index_train = I[i*batch_size:(i+1)*batch_size]
         batch_xs = input_x[index_train]
         batch_ys = input_y[index_train]
-        feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, keep_prob: 0.7}
+        clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
+        feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, keep_prob: 0.7, clr : clr, wdc : wdc}
         l, _, = sess.run([loss, optimizer], feed_dict=feed_dict)
         avg_cost_train += l / num_trainBatch
         
-        #modify parameters in adamw
-        clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
-        optimizer._lr    = clr
-        optimizer._lr_t  = clr 
-        optimizer._wdc   = wdc
-        optimizer._wdc_t = wdc
         if i % 1000 == 0:
             print(i, "trainingloss:", l)
             
