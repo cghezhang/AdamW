@@ -9,6 +9,7 @@ class AdamWParameter:
         self.Te          = Te                     #Ti: total number of epochs within the i-th run / restart of the algorithm
         self.Tmult       = Tmult                  
         self.LR          = LR                     #learning rate
+        self.LRDecay     = 0
         self.weightDecay = weightDecay            #learning rate decay rate 
         self.batchSize   = batchSize              #bt: batch size                   
         self.nBatches    = nBatches               #number of total batch
@@ -36,13 +37,11 @@ class AdamWParameter:
     
     
     #update and get paramter every epoch
-    def getParameter(self, epoch):
-        
+    def getParameter(self, epoch):     
         yita = self.learningRateCosineSGDR(epoch)
-        lr   = yita * self.LR
-        lrd  = self.weightDecay
-        clr  = lr/(1+self.t*lrd)                             #currentLearningRate
-        wdc  = yita * self.wd                                #weightDecayCurrent
+        lr   = yita * self.LR                                 #LearningRate
+        clr  = lr/(1 + self.t * self.LRDecay)                 #current LearningRate
+        wdc  = yita * self.wd                                 #weightDecayCurrent
         self.t +=1 
         return (
                 np.float32(clr),
