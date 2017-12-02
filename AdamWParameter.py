@@ -9,7 +9,6 @@ class AdamWParameter:
         self.Te          = Te                     #Ti: total number of epochs within the i-th run / restart of the algorithm
         self.Tmult       = Tmult                  
         self.LR          = LR                     #learning rate
-        self.LRDecay     = 0
         self.weightDecay = weightDecay            #learning rate decay rate 
         self.batchSize   = batchSize              #bt: batch size                   
         self.nBatches    = nBatches               #number of total batch
@@ -17,14 +16,15 @@ class AdamWParameter:
         self.T_cur       = 0   
         self.t           = 0 
         self.wd          = self.weightDecayNormalized()
+        self.H_cur       = 0.9
     
     
     #yita
     def learningRateCosineSGDR(self, epoch):
         self.T_cur = self.T_cur + 1 / (self.Te * self.nBatches)
-        if self.T_cur >= 1:
-            self.T_cur = 1
-        if (self.T_cur >= 1) and (epoch == self.EpochNext):
+        if self.T_cur >= self.H_cur:
+            self.T_cur = self.H_cur
+        if (self.T_cur >= self.H_cur) and (epoch == self.EpochNext):
             self.T_cur = 0
             self.Te = self.Te * self.Tmult
             self.EpochNext = self.EpochNext + self.Te
@@ -33,15 +33,16 @@ class AdamWParameter:
 
     #wt
     def weightDecayNormalized(self):
-        return self.weightDecay / ( np.power(self.nBatches * self.Te, 0.5) )
+        return self.weightDecay / (np.power(self.nBatches * self.Te, 0.5))
     
     
     #update and get paramter every epoch
-    def getParameter(self, epoch):     
+    def getParameter(self, epoch):
+        
         yita = self.learningRateCosineSGDR(epoch)
-        lr   = yita * self.LR                                 #LearningRate
-        clr  = lr/(1 + self.t * self.LRDecay)                 #current LearningRate
-        wdc  = yita * self.wd                                 #weightDecayCurrent
+        lr   = yita * self.LR
+        clr  = lr/(1+self.t*0)                               #currentLearningRate
+        wdc  = yita * self.wd                                #weightDecayCurrent
         self.t +=1 
         return (
                 np.float32(clr),

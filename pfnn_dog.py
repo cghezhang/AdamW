@@ -3,7 +3,7 @@ import tensorflow as tf
 import PFNNParameter as PFNN
 from PFNNParameter import PFNNParameter
 from AdamWParameter import AdamWParameter
-from AdamW import AdamOptimizer
+from AdamW_win import AdamOptimizer
 import os.path
 
 tf.set_random_seed(23456)  
@@ -136,12 +136,12 @@ learning_rate      = 0.0001
 learning_rateDecay = 0.0025
 """
 
-learning_rate      = 0.001
-learning_rateDecay = 0.025
+learning_rate      = 0.0001
+weightDecay        = 0.0025
 
 batch_size         = 32
 training_epochs    = 200
-Te                 = 20
+Te                 = 2
 Tmult              = 2 
 total_batch        = int(number_example / batch_size)
 
@@ -149,7 +149,7 @@ ap = AdamWParameter(nEpochs      = training_epochs,
                     Te           = Te,
                     Tmult        = Tmult,
                     LR           = learning_rate, 
-                    weightDecay  = learning_rateDecay,
+                    weightDecay  = weightDecay,
                     batchSize    = batch_size,
                     nBatches     = total_batch
                     )
@@ -175,9 +175,6 @@ saver = tf.train.Saver()
 
 
 #batch size and epoch
-batch_size = 32
-training_epochs = 200
-total_batch = int(number_example / batch_size)
 print("totoal_batch:", total_batch)
 
 #randomly select training set
@@ -222,6 +219,8 @@ for epoch in range(training_epochs):
         
         if i % 1000 == 0:
             print(i, "trainingloss:", l)
+            print('Epoch:', '%04d' % (epoch + 1), 'clr:', clr)
+            print('Epoch:', '%04d' % (epoch + 1), 'wdc:', wdc)
             
     for i in range(num_testBatch):
         if i==0:
@@ -239,8 +238,6 @@ for epoch in range(training_epochs):
     #print and save training test error 
     print('Epoch:', '%04d' % (epoch + 1), 'trainingloss =', '{:.9f}'.format(avg_cost_train))
     print('Epoch:', '%04d' % (epoch + 1), 'testloss =', '{:.9f}'.format(avg_cost_test))
-    print('Epoch:', '%04d' % (epoch + 1), 'clr:', sess.run(optimizer._lr), sess.run(optimizer._lr_t))
-    print('Epoch:', '%04d' % (epoch + 1), 'wdc:', sess.run(optimizer._wdc),sess.run(optimizer._wdc_t))
     error_train[epoch] = avg_cost_train
     error_test[epoch]  = avg_cost_test
     error_train.tofile("./dog/model/error_train.bin")
