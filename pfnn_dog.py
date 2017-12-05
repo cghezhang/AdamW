@@ -136,12 +136,12 @@ learning_rate      = 0.0001
 learning_rateDecay = 0.0025
 """
 
-learning_rate      = 0.0001
+learning_rate      = 0.0005
 weightDecay        = 0.0025
 
 batch_size         = 32
-training_epochs    = 200
-Te                 = 2
+training_epochs    = 256
+Te                 = 1
 Tmult              = 2 
 total_batch        = int(number_example / batch_size)
 
