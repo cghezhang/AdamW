@@ -3,13 +3,13 @@ import tensorflow as tf
 import PFNNParameter as PFNN
 from PFNNParameter import PFNNParameter
 from AdamWParameter import AdamWParameter
-from AdamW_win import AdamOptimizer
+from AdamW import AdamOptimizer
 import os.path
 
 tf.set_random_seed(23456)  
 
 #load data
-data = np.float32(np.loadtxt('Data.txt'))
+data = np.float32(np.loadtxt('nnData.txt'))
 
 
 #A,B,C stores continuous 3 frames in same animation sequence 
@@ -27,12 +27,12 @@ C = np.asarray(C)
 number_example =len(A)    #number of training data
 
 
-num_joint=21              #number of joint
+num_joint=27              #number of joint
 num_trajectory = 12       #number of points in trajectory
-num_style = 8             #number of style
+num_style = 7             #number of style
 offset= 3                 #first 3 item in data are no use.
-jointNeurons = 6*num_joint  #pos, vel, trans 
-trajectoryNeurons = (8+num_style)*num_trajectory #pos, dir,hei, style
+jointNeurons = 12*num_joint  #pos,forward, up, vel
+trajectoryNeurons = (8+num_style)*num_trajectory #pos, dir, hei, style
     
 #input 
 X = np.concatenate(
@@ -88,7 +88,8 @@ input_y = Y
 input_size  = input_x.shape[1]
 output_size = input_y.shape[1]
 print("Data is processed")
-
+print("input dim: ", input_size-1)
+print("output dim: ", output_size)
 
 
 
@@ -131,18 +132,19 @@ H3 = tf.squeeze(H3, -1)
 
 loss = tf.reduce_mean(tf.square(Y_nn - H3))
 
-"""
-learning_rate      = 0.0001
-learning_rateDecay = 0.0025
-"""
 
-learning_rate      = 0.0005
+learning_rate      = 0.0001
 weightDecay        = 0.0025
 
+'''
+learning_rate      = 0.0005
+weightDecay        = 0.0025
+'''
 batch_size         = 32
-training_epochs    = 256
-Te                 = 1
-Tmult              = 2 
+training_epochs    = 150
+Te                 = 10
+#Tmult              = 2
+Tmult              = 2
 total_batch        = int(number_example / batch_size)
 
 ap = AdamWParameter(nEpochs      = training_epochs, 
@@ -183,7 +185,8 @@ rng.shuffle(I)
 
 
 #training set and  test set
-num_testBatch  = np.int(total_batch/10)
+count_test     = 0
+num_testBatch  = np.int(total_batch * count_test)
 num_trainBatch = total_batch - num_testBatch
 print("training_batch:", num_trainBatch)
 print("test_batch:", num_testBatch)
