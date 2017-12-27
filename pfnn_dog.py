@@ -9,7 +9,7 @@ import os.path
 tf.set_random_seed(23456)  
 
 #load data
-data = np.float32(np.loadtxt('nnData.txt'))
+data = np.float32(np.loadtxt('newData.txt'))
 
 
 #A,B,C stores continuous 3 frames in same animation sequence 
@@ -76,10 +76,10 @@ X = (X - Xmean) / Xstd
 Y = (Y - Ymean) / Ystd
 
 #save mean and std
-Xmean.tofile('./dog/data/Xmean.bin')
-Ymean.tofile('./dog/data/Ymean.bin')
-Xstd.tofile('./dog/data/Xstd.bin')
-Ystd.tofile('./dog/data/Ystd.bin')
+Xmean.tofile('./dog/nn/Xmean.bin')
+Ymean.tofile('./dog/nn/Ymean.bin')
+Xstd.tofile('./dog/nn/Xstd.bin')
+Ystd.tofile('./dog/nn/Ystd.bin')
 
 
 input_x = np.concatenate((X,P),axis = 1) #input of nn, including X and P
