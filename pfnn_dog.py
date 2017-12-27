@@ -9,7 +9,7 @@ import os.path
 tf.set_random_seed(23456)  
 
 #load data
-data = np.float32(np.loadtxt('newData.txt'))
+data = np.float32(np.loadtxt('Data.txt'))
 
 
 #A,B,C stores continuous 3 frames in same animation sequence 
@@ -143,7 +143,6 @@ weightDecay        = 0.0025
 batch_size         = 32
 training_epochs    = 150
 Te                 = 10
-#Tmult              = 2
 Tmult              = 2
 total_batch        = int(number_example / batch_size)
 
