@@ -45,5 +45,5 @@ for i in range(num_trainBatch):
         batch_ys = ...
         clr, wdc = ap.getParameter(epoch)   #currentLearningRate & weightDecayCurrent
         feed_dict = {X_nn: batch_xs, Y_nn: batch_ys, lr_c: clr, wd_c: wdc}
-        l, _, = sess.run([loss, optimizer], feed_dict=feed_dict)\
+        l, _, = sess.run([loss, optimizer], feed_dict=feed_dict)
 '''
