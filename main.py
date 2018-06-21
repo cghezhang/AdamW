@@ -1,7 +1,7 @@
 """
 3 STEPs:
-1. Initialize Optimizer Controller ap = AdamWParameter(...)
-2. Create Optimizer AdamOptimizer(...)
+1. Initialize Optimizer Controller ap=AdamWParameter(...)
+2. Create Optimizer optimizer=AdamOptimizer(...)
 3. For each training batch, run ap.getParameter(epoch) to get current learning_rate and weightDecay rate
 """
 
